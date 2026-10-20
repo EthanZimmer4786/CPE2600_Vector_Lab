@@ -98,6 +98,9 @@ extern int parse_command()
     char *tokens[MAX_TOKENS];
     int n_tokens = 0;
 
+    // Print prompt
+    printf("> ");
+
     // Get command from console
     fgets(command, MAX_INPUT, stdin);
 
@@ -131,17 +134,6 @@ extern int parse_command()
                 list_vect();
                 break;
             }
-            if (strcmp(tokens[0], "save") == 0)
-            {
-                FILE* file = fopen("vectors.csv", "w");
-                if (vect_to_csv(file))
-                {
-                    printf("Failed to save file\n");
-                }
-                fclose(file);
-                break;
-            }
-
             // Assume token is a vector name
             vect3 vect;
 
@@ -156,6 +148,17 @@ extern int parse_command()
             break;
 
         case 2:
+            if (strcmp(tokens[0], "save") == 0)
+            {
+                FILE* file = fopen(tokens[1], "w");
+                if (vect_to_csv(file))
+                {
+                    printf("Failed to save file\n");
+                }
+                fclose(file);
+                break;
+            }
+
             if (strcmp(tokens[0], "load") == 0)
             {
                 // Get last dot in file path

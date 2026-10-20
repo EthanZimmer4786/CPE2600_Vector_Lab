@@ -33,9 +33,9 @@ Subtracting vectors
 > a - b
 -1 0 1
 ```
-Multiplying vectors
+Multiplying vector with a scalar
 ```
-> a * b
+> a * 2
 2 4 6
 ```
 All operations can be assigned to a new vector

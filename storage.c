@@ -136,17 +136,35 @@ extern int vect_from_csv(FILE* csv)
         // Remove trailing newline
         buffer[strcspn(buffer, "\n")] = '\0';
 
-        char name_tok[MAX_NAME];
-        strcpy(name_tok, strtok(buffer, ","));
-        const float x = atof(strtok(NULL, ","));
-        const float y = atof(strtok(NULL, ","));
-        const float z = atof(strtok(NULL, ","));
+        // If line is empty then skip
+        if (buffer[0] == '\0') continue;
+
+        // Extract tokens
+        char* name_tok = strtok(buffer, ",");
+        char* x_tok = strtok(NULL, ",");
+        char* y_tok = strtok(NULL, ",");
+        char* z_tok = strtok(NULL, ",");
+
+        // Validate tokens
+        if (name_tok == NULL || x_tok == NULL ||
+            y_tok == NULL || z_tok == NULL)
+        {
+            fprintf(stderr, "Invalid CSV row: %s\n", buffer);
+            continue;
+        }
+
+        char name[MAX_NAME];
+        snprintf(name, sizeof(name), "%s", name_tok);
+
+        const float x = atof(x_tok);
+        const float y = atof(y_tok);
+        const float z = atof(z_tok);
 
         // Create vector
         vect3 vect = {.x = x, .y = y, .z = z};
 
         // Add vector
-        add_vect(name_tok, vect);
+        add_vect(name, vect);
 
         added++;
     }

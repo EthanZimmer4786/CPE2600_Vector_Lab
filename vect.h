@@ -6,7 +6,7 @@
 #define CPE2600_VECT_H
 
 #define MAX_NAME 16
-#define MAX_CSV_BUFFER 32
+#define MAX_CSV_BUFFER 64
 
 typedef struct
 {
