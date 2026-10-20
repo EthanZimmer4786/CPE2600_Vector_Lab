@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -g -Wall
 LDFLAGS=-lncurses -lm
 SOURCES=main.c ui.c vect_math.c storage.c
 OBJECTS=$(SOURCES:.c=.o)

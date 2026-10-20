@@ -5,16 +5,22 @@
 #ifndef CPE2600_STORAGE_H
 #define CPE2600_STORAGE_H
 
+#include <stdio.h>
 #include "vect.h"
 
-#define MAX_VECTORS 10
-#define MAX_NAME 8
+#define VECTOR_CHUNK 4
 
-extern void add_vect(char name[MAX_NAME], vect3 vect);
+extern int add_vect(char name[MAX_NAME], vect3 vect);
 
 extern int get_vect(char name[MAX_NAME], vect3 *vect);
 
 extern void list_vect();
+
+extern void clear_vect();
+
+extern int vect_from_csv(FILE* csv);
+
+extern int vect_to_csv(FILE* csv);
 
 
 #endif //CPE2600_STORAGE_H

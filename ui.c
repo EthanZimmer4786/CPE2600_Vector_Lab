@@ -7,10 +7,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "ui.h"
-
 #include <stdlib.h>
 
+#include "ui.h"
 #include "storage.h"
 #include "vect_math.h"
 
@@ -119,11 +118,27 @@ extern int parse_command()
         case 1:
             if (strcmp(tokens[0], "quit") == 0)
             {
+                clear_vect();
                 return -1;
+            }
+            if (strcmp(tokens[0], "clear") == 0)
+            {
+                clear_vect();
+                break;
             }
             if (strcmp(tokens[0], "list") == 0)
             {
                 list_vect();
+                break;
+            }
+            if (strcmp(tokens[0], "save") == 0)
+            {
+                FILE* file = fopen("vectors.csv", "w");
+                if (vect_to_csv(file))
+                {
+                    printf("Failed to save file\n");
+                }
+                fclose(file);
                 break;
             }
 
@@ -138,6 +153,46 @@ extern int parse_command()
                 printf("No vector found for %s\n", tokens[0]);
             }
 
+            break;
+
+        case 2:
+            if (strcmp(tokens[0], "load") == 0)
+            {
+                // Get last dot in file path
+                char* dot_ptr = strrchr(tokens[1], '.');
+
+                if (dot_ptr != NULL)
+                {
+                    // Copy the extension to a variable
+                    char extension[3];
+                    strcpy(extension, dot_ptr + 1);
+
+                    // Check if extension is a csv
+                    if (strcmp(extension, "csv") == 0)
+                    {
+                        FILE* file = fopen(tokens[1], "r");
+                        if (file != NULL)
+                        {
+                            const int status = vect_from_csv(file);
+
+                            fclose(file);
+
+                            if (status >= 0) {
+                                printf("Loaded %d vectors\n", status);
+                                break;
+                            }
+                            printf("Failed loading vectors from %s\n", tokens[1]);
+                            break;
+                        }
+                        printf("Could not open file %s\n", tokens[1]);
+                        break;
+                    }
+                    printf("File %s must be a .csv\n", tokens[1]);
+                    break;
+                }
+                printf("Could not locate file extension in %s\n", tokens[1]);
+                break;
+            }
             break;
 
         case 3:
